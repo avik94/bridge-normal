@@ -1,0 +1,192 @@
+:root {
+  /** primary **/
+  --vue-color-primary: #010d87;
+  --vue-color-primary-rgb: 1, 13, 135;
+  --vue-color-primary-contrast: #ffffff;
+  --vue-color-primary-contrast-rgb: 255, 255, 255;
+  --vue-color-primary-shade: #010b77;
+  --vue-color-primary-tint: #1a2593;
+
+  /** secondary **/
+  --vue-color-secondary: #1a73e8;
+  --vue-color-secondary-rgb: 26, 115, 232;
+  --vue-color-secondary-contrast: #ffffff;
+  --vue-color-secondary-contrast-rgb: 255, 255, 255;
+  --vue-color-secondary-shade: #1765cc;
+  --vue-color-secondary-tint: #3181ea;
+
+  /** tertiary **/
+  --vue-color-tertiary: #7044ff;
+  --vue-color-tertiary-rgb: 112, 68, 255;
+  --vue-color-tertiary-contrast: #ffffff;
+  --vue-color-tertiary-contrast-rgb: 255, 255, 255;
+  --vue-color-tertiary-shade: #633ce0;
+  --vue-color-tertiary-tint: #7e57ff;
+
+  /** success **/
+  --vue-color-success: #01a622;
+  --vue-color-success-rgb: 1, 166, 34;
+  --vue-color-success-contrast: #ffffff;
+  --vue-color-success-contrast-rgb: 255, 255, 255;
+  --vue-color-success-shade: #01921e;
+  --vue-color-success-tint: #1aaf38;
+
+  /** warning **/
+  --vue-color-warning: #FE9003;
+  --vue-color-warning-rgb: 254, 144, 3;
+  --vue-color-warning-contrast: #000000;
+  --vue-color-warning-contrast-rgb: 0, 0, 0;
+  --vue-color-warning-shade: #e07f03;
+  --vue-color-warning-tint: #fe9b1c;
+
+  /** danger **/
+  --vue-color-danger: #f04141;
+  --vue-color-danger-rgb: 245, 61, 61;
+  --vue-color-danger-contrast: #ffffff;
+  --vue-color-danger-contrast-rgb: 255, 255, 255;
+  --vue-color-danger-shade: #d33939;
+  --vue-color-danger-tint: #f25454;
+
+  /** dark **/
+  --vue-color-dark: #263238;
+  --vue-color-dark-rgb: 38, 50, 56;
+  --vue-color-dark-contrast: #ffffff;
+  --vue-color-dark-contrast-rgb: 255, 255, 255;
+  --vue-color-dark-shade: #212c31;
+  --vue-color-dark-tint: #3c474c;
+
+  /** medium **/
+  --vue-color-medium: #455a64;
+  --vue-color-medium-rgb: 69, 90, 100;
+  --vue-color-medium-contrast: #ffffff;
+  --vue-color-medium-contrast-rgb: 255, 255, 255;
+  --vue-color-medium-shade: #3d4f58;
+  --vue-color-medium-tint: #586b74;
+
+  /** light **/
+  --vue-color-light: #f4f5f8;
+  --vue-color-light-rgb: 244, 244, 244;
+  --vue-color-light-contrast: #000000;
+  --vue-color-light-contrast-rgb: 0, 0, 0;
+  --vue-color-light-shade: #d7d8da;
+  --vue-color-light-tint: #f5f6f9;
+
+  [color-primary] {
+    color: var(--vue-color-primary);
+  }
+
+  [color-success] {
+    color: var(--vue-color-success);
+  }
+
+  [color-secondary] {
+    color: var(--vue-color-secondary);
+  }
+
+  [color-warning] {
+    color: var(--vue-color-warning);
+  }
+
+  [color-danger] {
+    color: var(--vue-color-danger);
+  }
+
+  [color-dark] {
+    color: var(--vue-color-dark);
+  }
+
+  [color-medium] {
+     color: var(--vue-color-medium);
+   }
+
+  [color-light] {
+    color: var(--vue-color-light);
+  }
+
+  $fontStart: 0 1 2 3;
+  $fontEnd: 0 2 4 6 8;
+
+  @font-face {
+    font-family: RegularCustom;
+    src: url('../assets/font/Varela.ttf');
+  }
+
+  @font-face {
+    font-family: Exo;
+    src: url('../assets/font/Exo2-Regular.ttf');
+  }
+
+  @font-face {
+    font-family: Exo-Bold;
+    src: url('../assets/font/Exo2-SemiBold.ttf');
+  }
+
+  @font-face {
+    font-family: Prompt-Regular;
+    src: url('../assets/font/Prompt-Regular.ttf');
+  }
+  @font-face {
+    font-family: Digital;
+    src: url('../assets/font/digital-7.mono.ttf');
+  }
+  @font-face {
+    font-family: Nunito;
+    src: url("../assets/font/Nunito-Bold.ttf");
+  }
+
+  @font-face {
+    font-family: Titillium;
+    src: url("../assets/font/Titillium.ttf");
+  }
+
+  @each $i in $fontStart {
+    @each $j in $fontEnd {
+      $k: '#{$i}.#{$j}';
+      [font-#{$i}-#{$j}-em] {
+        font-size: #{$k}em !important;
+      }
+
+      [font-#{$i}-#{$j}-rem] {
+        font-size: #{$k}rem !important;
+      }
+    }
+  }
+
+  .heading-font {
+    font-family: Exo, sans-serif !important;
+  }
+
+  .font-heading-bold {
+    font-family: Exo-Bold, sans-serif !important;
+  }
+
+  .font-btn {
+    font-family: Prompt-Regular, sans-serif !important;
+  }
+
+  .regular-custom {
+    font-family: RegularCustom, sans-serif !important;
+  }
+
+  .font-digital {
+    font-family: Digital, sans-serif !important;
+  }
+
+  .font-nunito {
+    font-family: Nunito, sans-serif !important;
+  }
+
+  .font-titillium {
+    font-family: Titillium, sans-serif !important;
+  }
+
+  .v-application .primary {
+    background-color: var(--vue-color-primary) !important;
+  }
+
+  .theme--light.v-application {
+    background: #E8EAF6;
+  }
+}
+body {
+}
