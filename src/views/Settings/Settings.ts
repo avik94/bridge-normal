@@ -184,7 +184,7 @@ export default class Settings extends Vue {
                     this.response = await this.$http.post(`/bridge/analytics/mro_threshold/${this.$store.state.companyId}`, {
                         "Parameter name": this.paramNameVal,
                         // @ts-ignore
-                        "Machine name": this.positionName,
+                        "Machine id": this.positionName,
                         "Red": this.redThresholdVal,
                         "Yellow": this.yellowThresholdVal,
                         "Alert": this.alertThreshold
@@ -254,7 +254,7 @@ export default class Settings extends Vue {
                         //@ts-ignore
                         "Parameter name": this.paramName,
                         //@ts-ignore
-                        "Machine name": this.positionName,
+                        "Machine id": this.positionName,
                         "Threshold": this.deflectionVal,
                     });
 

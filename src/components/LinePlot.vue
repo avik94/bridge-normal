@@ -258,6 +258,7 @@ export default class LinePlot extends Vue {
                 "Quick Time Range": "2m"
               };
             let responseData = await this.$http.post(`/bridge/analytics/processed_data/${this.$store.state.companyId}`, data);
+            console.log(this.chooseAxis)
             console.log(responseData.data.Trend[this.chooseAxis].y[responseData.data.Trend[this.chooseAxis].y.length-1]);
             // const update = {
             //       x:  [[time.getTime()]],
