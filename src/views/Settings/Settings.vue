@@ -33,6 +33,8 @@
                       <v-col cols="12" sm="3">
                         <v-select
                           :items="positionItems"
+                          item-text="name"
+                          item-value="id"
                           v-model="positionName"
                           label="Select Position"
                           :rules="positionRequired"
@@ -43,10 +45,9 @@
                       <v-col cols="12" sm="3">
                         <v-select
                           :items="paramItems"
+                          @change="gatParameter($event)"
                           label="Select Parameter"
                           v-model="paramName"
-                          item-text="Parameter"
-                          item-value="Parameter"
                           :rules="paramRequired"
                           dense
                         ></v-select>
@@ -64,7 +65,7 @@
                             color="primary"
                             :disabled="!eventTrapDataValid"
                             @click.stop="mroDialog = true" small 
-                          >Mro Threshold</v-btn>
+                          >Threshold</v-btn>
                         </v-col>
                         <v-col cols="12" sm="3">
                           <v-btn
@@ -73,13 +74,13 @@
                             @click.stop="eventDialog = true" small
                           >Event Trap</v-btn>
                         </v-col>
-                        <v-col cols="12" sm="3">
+                        <!-- <v-col cols="12" sm="3">
                           <v-btn
                             color="primary"
                             :disabled="!eventTrapDataValid"
                             @click.stop="calibrationDialog = true" small
                           >Calibration</v-btn>
-                        </v-col>
+                        </v-col> -->
                     </v-row>
                       
                   </v-expansion-panel-content>
@@ -90,7 +91,7 @@
             <v-dialog v-model="mroDialog"
                     max-width="500">
                     <v-card style="padding:10px">
-                      <v-row>
+                      <v-row v-if="deflectionVibration">
                           <v-col cols="12" sm="6">
                                     <v-text-field
                                       label="Threshold for Red Alert"
@@ -107,6 +108,20 @@
                                       :rules="yellowThresholdRequired"
                                       value="0"
                                       v-model="yellowThreshold"
+                                    ></v-text-field>
+                                  </v-col>
+                                  <v-col cols="12" align-self="center">
+                          <v-btn @click="submitThresholdData()" color="primary" :disabled="!commonDataValid" small>Submit</v-btn>
+                        </v-col>
+                      </v-row>
+                      <v-row v-if="!deflectionVibration">
+                          <v-col cols="12" sm="6">
+                                    <v-text-field
+                                      label="Threshold Alert"
+                                      placeholder="Enter Alert"
+                                      :rules="redThresholdRequired"
+                                      value="0"
+                                      v-model="alertThreshold"
                                     ></v-text-field>
                                   </v-col>
                                   <v-col cols="12" align-self="center">
@@ -152,7 +167,7 @@
                         <v-btn color="pink" text @click="eventTrapSnackBar = false">Close</v-btn>
                       </v-snackbar>
 
-                  <v-dialog v-model="calibrationDialog"
+                  <!-- <v-dialog v-model="calibrationDialog"
                     max-width="500">
                     <v-card style="padding:10px">
                       <v-form ref="calibrationForm" v-model="calibrationDataValid">
@@ -175,7 +190,7 @@
                       </v-row>
                     </v-form>
                     </v-card>
-                  </v-dialog>
+                  </v-dialog> -->
     </v-form>
   </v-container>
 </template>

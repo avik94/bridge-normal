@@ -59,7 +59,7 @@ export default class Navigation extends Vue {
         // { title: "Add Sensor", icon: "mdi-leak", url: "/add-sensor" },
         // { title: "Add Bridge", icon: "mdi-bridge", url: "/add-bridge" },
         // { title: "Alarm", icon: "mdi-alarm-light", url: "" },
-        { title: "Settings", icon: "mdi-cog", url: "/bridge/settings" },
+        { title: "Alert Settings", icon: "mdi-cog", url: "/bridge/settings" },
         {
           title: "Spectrum Analysis",
           icon: "mdi-bridge",

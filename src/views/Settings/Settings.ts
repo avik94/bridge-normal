@@ -21,6 +21,8 @@ export default class Settings extends Vue {
     eventDialog = false;
     calibrationDialog = false;
     locationName = "";
+    deflectionVibration = false;
+    alertThreshold= "";
 
     data() {
         return {
@@ -50,6 +52,7 @@ export default class Settings extends Vue {
             paramName: "",
             redThreshold: "0",
             yellowThreshold: "1",
+            alertThreshold: "1",
 
             eventTrapThreshold: "0",
             refSensorHeight: "0",
@@ -66,10 +69,7 @@ export default class Settings extends Vue {
             //     "Y",
             //     "Z"
             // ],
-            paramItems: [
-                { "Parameter": "Deflection" },
-                { "Parameter": "Vibration" },
-            ],
+            paramItems: ["Deflection", "Vibration" ,"SI", "PGA"],
             zoneRequired: [
                 (v: boolean) => !!v || "Please Select Zone",
             ],
@@ -174,18 +174,20 @@ export default class Settings extends Vue {
                 //@ts-ignore
                 this.yellowThresholdVal = this.yellowThreshold;
 
-                this.mroDataObj["Parameter"] = this.paramNameVal;
-                this.mroDataObj["Red"] = this.redThresholdVal;
-                this.mroDataObj["Yellow"] = this.yellowThresholdVal;
+                // this.mroDataObj["Parameter"] = this.paramNameVal;
+                // this.mroDataObj["Red"] = this.redThresholdVal;
+                // this.mroDataObj["Yellow"] = this.yellowThresholdVal;
+                // this.mroDataObj["Alert"]= this.alertThreshold;
 
                 if (this.$store.state.companyId) {
                     //@ts-ignore
                     this.response = await this.$http.post(`/bridge/analytics/mro_threshold/${this.$store.state.companyId}`, {
                         "Parameter name": this.paramNameVal,
-                        //@ts-ignore
+                        // @ts-ignore
                         "Machine name": this.positionName,
                         "Red": this.redThresholdVal,
                         "Yellow": this.yellowThresholdVal,
+                        "Alert": this.alertThreshold
                     });
                     // show message indicating Threshold value sent, following line will change
                     // console.log(this.response.data);
@@ -272,6 +274,16 @@ export default class Settings extends Vue {
         }
 
 
+    }
+    
+    async gatParameter(data){
+        console.log('data', data);
+        if(data == 'Deflection' || data == 'Vibration') {
+            this.deflectionVibration = true;
+        }
+        else{
+            this.deflectionVibration = false;
+        }
     }
 
 }

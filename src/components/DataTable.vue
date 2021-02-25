@@ -87,7 +87,8 @@ export default class DataTable extends Vue {
        const data = {
         "Company name": this.$store.state.companyName,
         "Zone name": this.myProps.zone,
-        "Machine name": this.myProps.machine,
+        "Machine id": this.myProps.machine,
+        "Machine name": this.myProps.machinePositionName,
         "Sensor": this.myProps.sensor,
         "Subassembly Instance": this.myProps.subassembly,
         "Collector name": this.myProps.collector,
@@ -113,7 +114,8 @@ export default class DataTable extends Vue {
       const data = {
         "Company name": this.$store.state.companyName,
         "Zone name": this.myProps.zone,
-        "Machine name": this.myProps.machine,
+        "Machine id": this.myProps.machine,
+        "Machine name": this.myProps.machinePositionName,
         "Subassembly Instance": this.myProps.subassembly,
         "Collector name": this.myProps.collector,
         "Stat name": this.myProps.stat,
