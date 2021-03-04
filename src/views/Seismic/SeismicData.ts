@@ -2,39 +2,35 @@ import Vue from "vue";
 import { Component, Watch } from "vue-property-decorator";
 import JsonCSV from "vue-json-csv";
 
-import BarChart from "../../components/BarChart.vue";
-import LinePlot from "../../components/LinePlot.vue";
-import DataTable from "../../components/DataTable.vue";
+import SeismicBarChart from "../../components/SeismicBarChart.vue";
+import SeismicLinePlot from "../../components/SeismicLinePlot.vue";
+import SeismicDataTable from "../../components/SeismicDataTable.vue";
 import axios from 'axios';
 
 Vue.component("downloadCsv", JsonCSV);
 
 @Component({
     components: {
-        BarChart,
-        LinePlot,
-        DataTable,
+        SeismicBarChart,
+        SeismicLinePlot,
+        SeismicDataTable,
     }
 })
-export default class ViewBridgeData extends Vue {
-    
-    // main input field start from here
+
+export default class SeismicData extends Vue { 
     allData:{} = "";
     tab = 0;
     parameterName = "";
     parameterItems = [ 
-        { name: "Mean", value: "MEAN" }, 
-        { name: "Median", value: "TUNED_NN_MEDIAN" }, 
-        { name: "Variance", value: "VARIANCE" },
-        { name: "Peak", value: "PERCENTILE_95" },
-        { name: "Modified_Mean", value: "Modified_Mean" },
-        { name: "Deflection_Magnitude", value: "Deflection_Magnitude"}
+        { name: "SI", value: "SI" },
+        { name: "PGA", value: "PGA" }
     ];
     positionName = "";
     machinePositionName = "";
     positionItems = [];
     zoneName = "";
     zoneItems = [];
+    bridgeItems = [];
     unitName = "";
     unitItems = [];
     interceptValue = 0;
@@ -51,13 +47,10 @@ export default class ViewBridgeData extends Vue {
         { name: "Last 3 hours", time: "180m" },
         { name: "Last 6 hours", time: "360m" },
         { name: "Last 12 hours", time: "720m" },
-        { name: "Last 24 hours", time: "1440m" },
-        { name: "Last 2 days", time: "2880m" },
-        { name: "Last 7 days",  time: "10080m" },
-        { name: "Last 30 days", time: "43200m" },
     ]
     sensor = "";
-    sensorItem = ["Vibration", "Deflection", "Seismic"];
+    sensorItem = ["Seismic"];
+    locationName = "";
     // for only custome times for one
     fromDate = "";
     fromDateHour = "";
@@ -97,57 +90,44 @@ export default class ViewBridgeData extends Vue {
     health = false;
     noHealth = true;
     tableTitle = ["Trend", "Table"];
+    
+    data(){
+        return{
+            bridgeItems: [],
+            bridgeRequired: [
+                (v: boolean) => !!v || "Please Select Bridge",
+            ],
+        }
+    }
 
     async initialize() {
+
+        // get location based on company id
         try {
             if (this.$store.state.companyId) {
-
-                let fullUrl = window.location.href;
-                const decodedUrl = decodeURIComponent(fullUrl);
-                const locationName = decodedUrl.split("/").pop();
-
-                if (this.$store.state.companyId && locationName) {
-                    //@ts-ignore
-                    this.response = await this.$http.post(`/bridge/analytics/update_zone/${companyId}`, {
-                        "Company id": this.$store.state.companyId,
-                        "Location name": locationName
-                    });
-                    //@ts-ignore
-                    this.zoneItems = this.response.data.zone_list;
-                }
-
+                //@ts-ignore
+                this.response = await axios.post(`${this.$store.state.baseURL}/bridge/analytics/update_location/${this.$store.state.companyId}`, {
+                    "Company id": this.$store.state.companyId,
+                });
+                //@ts-ignore
+                this.bridgeItems = this.response.data.location_list;
             }
         } catch (error) {
             console.log("Something went wrong, please try again later.");
         }
+
     }
 
-    async created() {
-        await this.initialize();
-        await this.getZoneFromSingleLocation();
-        // console.log(this.$route.params.bridgeName);
-    }
-
-
-    async getZoneFromSingleLocation() {
-        this.tabResult = false;
-        this.timeRange = "";
-        try {
-            let companyId = this.$store.state.companyId;
-            let locationName = this.$route.params.bridgeName;
-            locationName = decodeURIComponent(locationName);
-            if (companyId && locationName) {
-                //@ts-ignore
-                this.response = await this.$http.post(`/bridge/analytics/update_zone/${companyId}`, {
-                    "Company id": companyId,
-                    "Location name": locationName
-                });
-                //@ts-ignore
-                this.zoneItems = this.response.data.zone_list;
-            }
-
-        } catch (error) {
-            console.log("Something went wrong, please try again later.");
+    async getZoneFromLocation(locationName: string) {
+        this.locationName = locationName;
+        if (this.$store.state.companyId && locationName) {
+            //@ts-ignore
+            this.response = await axios.post(`${this.$store.state.baseURL}/bridge/analytics/update_zone/${this.$store.state.companyId}`, {
+                "Company id": this.$store.state.companyId,
+                "Location name": locationName
+            });
+            //@ts-ignore
+            this.zoneItems = this.response.data.zone_list;
         }
     }
 
@@ -161,7 +141,7 @@ export default class ViewBridgeData extends Vue {
             this.response = await this.$http.post(`/bridge/analytics/update_machine/${companyId}`, {
                 "Company id": companyId,
                 "Zone name": zoneName,
-                "Location": decodeURIComponent(locationName)
+                "Location": this.locationName
             });
             //@ts-ignore
             this.positionItems = this.response.data.machine_list;
@@ -179,29 +159,11 @@ export default class ViewBridgeData extends Vue {
     async chooseSensor(sensor) {
         this.tabResult = false;
         this.timeRange = "";
-        if(sensor === "Deflection") {
-            this.collector = "mg1"
-            this.parameterItems = [
-                { name: "Median", value: "TUNED_NN_MEDIAN" }, 
-                { name: "Modified_Median", value: "Modified_Median" },
-                { name: "Deflection_Magnitude", value: "Deflection_Magnitude"}
-            ]
-        }else if(sensor === "Vibration"){
-            this.collector = "ac1"
-            this.parameterItems = [
-                { name: "Peak", value: "PERCENTILE_95" },
-                { name: "Mean", value: "MEAN" },
-                { name: "Median", value: "Median" },
-                { name: "Variance", value: "VARIANCE" },
-                { name: "Standard Deviation", value: "SD"}
-            ]
-        }else{
             this.collector = 0
             this.parameterItems = [
                 { name: "SI", value: "SI" },
                 { name: "PGA", value: "PGA" }
             ]
-        }
     }
 
     async setAdditionalParams(paramName: string) { 
@@ -238,6 +200,10 @@ export default class ViewBridgeData extends Vue {
         this.unitItems = responseForUnit.data["unit_list"]
     }
 
+    async created() {
+        await this.initialize();
+    }
+
     async selectUnitWithLive() {
         this.timeRange  = "livePlot";
         await this.submitBridgeData();
@@ -247,16 +213,11 @@ export default class ViewBridgeData extends Vue {
         this.tabResult = true;
         setTimeout(()=>{
             const allData = {
-                zone: this.zoneName,
                 machine: this.positionName,
                 machinePositionName: this.machinePositionName,
                 sensor: this.sensor,
                 stat: this.parameterName,
-                subassembly: this.subassembly,
-                collector: this.collector,
                 unit: this.unitName,
-                interceptValue: this.interceptValue,
-                slope: this.scale,
                 quickTime: this.timeRange
             }
             console.log(allData)
@@ -273,16 +234,11 @@ export default class ViewBridgeData extends Vue {
             this.endTime = new Date(this.toDate+" "+this.toDateHour+":"+this.toDateMinute).getTime();
             console.log(this.endTime);
             const allData = {
-                zone: this.zoneName,
                 machine: this.positionName,
                 machinePositionName: this.machinePositionName,
                 sensor: this.sensor,
                 stat: this.parameterName,
-                subassembly: this.subassembly,
-                collector: this.collector,
                 unit: this.unitName,
-                interceptValue: this.interceptValue,
-                slope: this.scale,
                 quickTime: this.timeRange,
                 startTime: this.startTime,
                 endTime: this.endTime,

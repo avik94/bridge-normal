@@ -69,6 +69,11 @@ export default class Navigation extends Vue {
           title: "Event Trap",
           icon: "mdi-kubernetes",
           url: "/bridge/event-trap"
+        },
+        {
+          title: "Seismic",
+          icon: "mdi-kubernetes",
+          url: "/bridge/seismic"
         }
       ],
       fav: true,

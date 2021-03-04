@@ -117,11 +117,20 @@
                       <v-row v-if="!deflectionVibration">
                           <v-col cols="12" sm="6">
                                     <v-text-field
-                                      label="Threshold Alert"
+                                      label="Threshold Alert for SI"
                                       placeholder="Enter Alert"
                                       :rules="redThresholdRequired"
                                       value="0"
-                                      v-model="alertThreshold"
+                                      v-model="SI"
+                                    ></v-text-field>
+                                  </v-col>
+                                  <v-col cols="12" sm="6">
+                                    <v-text-field
+                                      label="Threshold Alert for PGA"
+                                      placeholder="Enter Threshold for Yellow Alert"
+                                      :rules="yellowThresholdRequired"
+                                      value="0"
+                                      v-model="PGA"
                                     ></v-text-field>
                                   </v-col>
                                   <v-col cols="12" align-self="center">

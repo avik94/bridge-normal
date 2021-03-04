@@ -63,6 +63,14 @@ export default new Router({
         title: "Event Trap",
       }
     },
+    {
+      path: "/bridge/seismic",
+      name: "seismic",
+      component: () => import("./views/Seismic/SeismicData.vue"),
+      meta: {
+        title: "Seismic",
+      }
+    },
 
   ],
 });

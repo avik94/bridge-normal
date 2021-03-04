@@ -22,7 +22,8 @@ export default class Settings extends Vue {
     calibrationDialog = false;
     locationName = "";
     deflectionVibration = false;
-    alertThreshold= "";
+    SI= "";
+    PGA= "";
 
     data() {
         return {
@@ -52,7 +53,8 @@ export default class Settings extends Vue {
             paramName: "",
             redThreshold: "0",
             yellowThreshold: "1",
-            alertThreshold: "1",
+            SI: "0",
+            PGA: "0",
 
             eventTrapThreshold: "0",
             refSensorHeight: "0",
@@ -69,7 +71,7 @@ export default class Settings extends Vue {
             //     "Y",
             //     "Z"
             // ],
-            paramItems: ["Deflection", "Vibration" ,"SI", "PGA"],
+            paramItems: ["Deflection", "Vibration" ,"Seismic"],
             zoneRequired: [
                 (v: boolean) => !!v || "Please Select Zone",
             ],
@@ -187,7 +189,8 @@ export default class Settings extends Vue {
                         "Machine id": this.positionName,
                         "Red": this.redThresholdVal,
                         "Yellow": this.yellowThresholdVal,
-                        "Alert": this.alertThreshold
+                        "SI": this.SI,
+                        "PGA": this.PGA
                     });
                     // show message indicating Threshold value sent, following line will change
                     // console.log(this.response.data);
